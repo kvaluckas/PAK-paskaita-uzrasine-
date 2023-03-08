@@ -28,10 +28,11 @@ def notes():
         args = request.form.get("note2")
         if (args):
             array.append(args)
+            insert_into_db(args)
             print(array)
-        return render_template('./notes.html', note =array )
+        return render_template('./notes.html', note = select_from_db() )
     else:
-        return render_template('./notes.html', note=array)
+        return render_template('./notes.html', note= select_from_db())
     
 
 def createDB():
@@ -54,19 +55,26 @@ def createDB():
         cursor.execute(createTableString)
         cursor.execute(createNotesTableString)
 
-def insert_into_db():
+def insert_into_db(note):
     conn=sqlite3.connect("./NotesDatabase.db")
     queryString="""
         INSERT INTO Sheets (Name) VALUES (?) 
     """
     cur = conn.cursor()
-    cur.execute(queryString,('test',))
+    cur.execute(queryString,(note,))
+    conn.commit()
 
-
+def select_from_db():
+    conn=sqlite3.connect("./NotesDatabase.db")
+    queryString="""
+        SELECT name from Sheets
+    """
+    cur = conn.cursor()
+    array = cur.execute(queryString).fetchall()
+    return array
 
 
 
 if __name__ == "__main__":
     createDB()
-    insert_into_db()
-    app.run(host="0.0.0.0",port = 500, debug="true")
+    app.run(debug="true")
