@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzrasine</title>
+</head>
+<style>
+
+  .diva{
+background-color: yellow;
+
+  }
+  .uzr{
+    background-color: rgb(255, 255, 255);
+    margin: 2rem;
+
+  }
+.uzr h2{
+  background-color: rgb(177, 44, 44);
+  border: 2px solid black;
+  margin-top:5px;
+  margin-inline: 1px;
+  padding:1rem;
+  color:azure
+
+}
+.header {
+  padding: 10 px;
+  text-align: center;
+  background: #6f0404c1;
+  color: white;
+  font-size: 30px;
+}
+
+
+
+input[type=button],
+      input[type=submit] {
+        background-color: #720b0b;
+        border: none;
+        color: #fff;
+        padding: 15px 30px;
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+
+
+
+
+</style>
+<body>
+  <div class="header">
+    <h2>Uzrasine</h2>
+</div>
+  <form action="/notes" method="post">
+    <br>
+    <label for= "fname"> Uzrasai </label>
+    <br>
+    <input  id="note2" name="note2" value=""><br>
+    <br>
+    <div class="button">
+    <input type="submit" value="Submit">
+  </div>
+  </form> 
+
+<div class ="uzr">
+  {%for i in note%}
+<h2>
+  {{i}}
+</h2>
+
+{%endfor%}
+</div>
+ <p>
+  {{note}}
+ </p>
+
+    
+    
+</body>
+</html>
