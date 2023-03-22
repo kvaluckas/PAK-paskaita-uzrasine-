@@ -37,7 +37,7 @@ def notes():
 
 @app.route("/registracija", methods=["GET", "POST"])
 def registracija():
-    rez = ""
+    rez = "registracija nesekminga"
     if(request.method =="POST"):
         usern = request.form.get("username")
         passw = request.form.get("password")
