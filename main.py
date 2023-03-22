@@ -13,6 +13,7 @@ def mano_funkcija():
 def test_route():
     return render_template('./index.html', var=plus_one)
 
+#komentaras, skirtas patikrinti commit 
 
 
 @app.route("/debug")
