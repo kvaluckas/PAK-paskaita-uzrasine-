@@ -27,14 +27,59 @@ def notes():
     if(request.method == "POST"):
         global array
         args = request.form.get("note2")
-        if (args):
+        if (args): #b00l if
             array.append(args)
             insert_into_db(args)
             print(array)
         return render_template('./notes.html', note = select_from_db() )
     else:
         return render_template('./notes.html', note= select_from_db())
+
+@app.route("/registracija", methods=["GET", "POST"])
+def registracija():
+    rez = "Neuzpildyta"
+    if(request.method =="POST"):
+        usern = request.form.get("username")
+        passw = request.form.get("password")
+        if (usern and passw):
+             rez = insert_into_user_db(usern, passw)
+             print(usern,passw)
+
+    return render_template('./reg.html', status = rez )
+         
     
+def createUserDB():
+        connection=sqlite3.connect("./Registracija.db")
+        cursor=connection.cursor()
+
+        createTableString = """CREATE TABLE IF NOT EXISTS Users (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            password TEXT NOT NULL
+        )"""
+        cursor.execute(createTableString)
+
+def insert_into_user_db(username, password):
+    conn=sqlite3.connect("./Registracija.db")
+    reg = "Registruoti vartotojo nepavyko"
+    queryString="""
+        INSERT INTO Users (username, password) VALUES (?,?) 
+    """
+    cur = conn.cursor()
+    cur.execute(queryString,(username,password))
+
+    try:
+         cur.execute(queryString,(username,password))
+         reg = "Registracija sekminga"
+    
+    except sqlite3.IntegrityError as e:
+         print(e)
+         print(reg)
+
+    conn.commit()
+    return reg
+
+
 
 def createDB():
         connection=sqlite3.connect("./NotesDatabase.db")
@@ -78,4 +123,5 @@ def select_from_db():
 
 if __name__ == "__main__":
     createDB()
+    createUserDB()
     app.run(debug="true")
