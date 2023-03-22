@@ -27,7 +27,7 @@ def notes():
     if(request.method == "POST"):
         global array
         args = request.form.get("note2")
-        if (args): #b00l if
+        if (args): #b00l if, if (args != NULL)
             array.append(args)
             insert_into_db(args)
             print(array)
@@ -37,14 +37,14 @@ def notes():
 
 @app.route("/registracija", methods=["GET", "POST"])
 def registracija():
-    rez = "Neuzpildyta"
+    rez = ""
     if(request.method =="POST"):
         usern = request.form.get("username")
         passw = request.form.get("password")
         if (usern and passw):
              rez = insert_into_user_db(usern, passw)
              print(usern,passw)
-
+        
     return render_template('./reg.html', status = rez )
          
     
@@ -66,14 +66,13 @@ def insert_into_user_db(username, password):
         INSERT INTO Users (username, password) VALUES (?,?) 
     """
     cur = conn.cursor()
-    cur.execute(queryString,(username,password))
-
     try:
          cur.execute(queryString,(username,password))
          reg = "Registracija sekminga"
-    
+
     except sqlite3.IntegrityError as e:
          print(e)
+         reg = "Registruoti vartotojo nepavyko"
          print(reg)
 
     conn.commit()
